@@ -40,6 +40,25 @@ const getAllNotesHandler = () => ({
   },
 });
 
+const getNoteByIdHandler = (request, h) => {
+  const { id } = request.params;
+  const note = notes.filter((n) => n.id === id)[0];
+  if (note !== undefined) {
+    return {
+      status: 'success',
+      data: {
+        note,
+      },
+    };
+  }
+  const response = h.response({
+    status: 'fail',
+    message: 'Catatan tidak ditambahkan',
+  });
+  response.code(4040);
+  return response;
+};
+
 const editNoteByIdHandler = (request, h) => {
   const { id } = request.params;
   const { title, tags, body } = request.payload;
@@ -91,6 +110,7 @@ const deleteNoteByIdHandler = (request, h) => {
 module.exports = {
   addNoteHandler,
   getAllNotesHandler,
+  getNoteByIdHandler,
   editNoteByIdHandler,
   deleteNoteByIdHandler,
 };
